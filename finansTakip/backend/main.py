@@ -15,7 +15,7 @@ app.include_router(user_router)
 # CORS ayarları (frontend erişimi için)
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # React dev sunucusu
+    allow_origins=["http://localhost:3000"],  # React dev sunucusu
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
