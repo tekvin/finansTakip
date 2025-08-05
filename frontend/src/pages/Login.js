@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import './Login.css';
 
 function Login() {
   const [username, setUsername] = useState('');
@@ -11,7 +12,6 @@ function Login() {
     e.preventDefault();
 
     try {
-      // FastAPI, application/x-www-form-urlencoded formatında veri bekliyor
       const formData = new URLSearchParams();
       formData.append('username', username);
       formData.append('password', password);
@@ -23,13 +23,8 @@ function Login() {
       });
 
       console.log('Giriş başarılı:', response.data);
-
-      // Genellikle FastAPI JWT token döndürür
       localStorage.setItem('token', response.data.access_token);
-
-      // Başarılı girişten sonra yönlendir
       navigate('/dashboard');
-
     } catch (error) {
       console.error('Giriş başarısız:', error.response?.data || error.message);
       alert('Giriş başarısız. Lütfen bilgilerinizi kontrol edin.');
@@ -37,67 +32,50 @@ function Login() {
   };
 
   return (
-    <div style={styles.container}>
-      <h2>Giriş Yap</h2>
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <input
-          type="text"
-          placeholder="Kullanıcı Adı"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={styles.input}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Şifre"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          style={styles.input}
-          required
-        />
-        <button type="submit" style={styles.button}>Giriş Yap</button>
-      </form>
+    <>
+      <div className="login-title">Giriş Yap</div>
+      <div className="login-container">
+        <form onSubmit={handleSubmit} className="login-form">
+          <div className="input-group">
+            <div className="icon-wrapper">
+              <i className="fas fa-user"></i>
+            </div>
+            <input
+              type="text"
+              placeholder="Kullanıcı Adı"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="login-input"
+              required
+            />
+          </div>
 
-      <p style={{ marginTop: '20px' }}>
-        Hesabınız yok mu?{' '}
-        <button onClick={() => navigate('/register')} style={styles.registerButton}>
-          Kayıt Ol
-        </button>
-      </p>
-    </div>
+          <div className="input-group">
+            <div className="icon-wrapper">
+              <i className="fas fa-lock"></i>
+            </div>
+            <input
+              type="password"
+              placeholder="Şifre"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="login-input"
+              required
+            />
+          </div>
+
+          <button type="submit" className="login-button">Giriş Yap</button>
+        </form>
+
+        <p style={{ marginTop: '20px' }}>
+          Hesabınız yok mu?{' '}
+          <button onClick={() => navigate('/register')} className="register-button">
+            Kayıt Ol
+          </button>
+        </p>
+      </div>
+    </>
   );
 }
-
-const styles = {
-  container: {
-    marginTop: '100px',
-    textAlign: 'center',
-  },
-  form: {
-    display: 'inline-block',
-    flexDirection: 'column',
-  },
-  input: {
-    display: 'block',
-    padding: '10px',
-    width: '250px',
-    margin: '10px auto',
-    fontSize: '16px',
-  },
-  button: {
-    padding: '10px 20px',
-    fontSize: '16px',
-    cursor: 'pointer',
-  },
-  registerButton: {
-    padding: '5px 10px',
-    fontSize: '14px',
-    backgroundColor: '#eee',
-    border: '1px solid #999',
-    borderRadius: '4px',
-    cursor: 'pointer',
-  },
-};
 
 export default Login;
